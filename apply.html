@@ -19,10 +19,9 @@
 
     <div class="form-card">
         <h1>Model Profile Submission</h1>
-        <p>Complete your details and upload your portfolio photos below to launch your profile.</p>
+        <p>Complete your profile details and upload your portfolio photos below to launch your listing on Zelo Agency.</p>
         
-        <!-- Replace YOUR_FORMSPREE_ID_HERE with your Formspree Endpoint ID -->
-        <form id="onboardForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID_HERE" method="POST" enctype="multipart/form-data">
+        <form id="onboardForm" action="https://formspree.io/f/xoejrarb" method="POST" enctype="multipart/form-data">
             
             <label>Stage Name / Alias</label>
             <input type="text" name="Stage Name" required placeholder="e.g. Alex Rivera">
@@ -54,7 +53,7 @@
             <label>Bio / Profile Introduction</label>
             <textarea name="Bio" rows="4" placeholder="Tell clients about yourself..."></textarea>
 
-            <button type="submit" class="btn-submit">Submit Details & Proceed to Payment ›</button>
+            <button type="submit" class="btn-submit" id="submitBtn">Submit Details & Proceed to Payment ›</button>
         </form>
     </div>
 
@@ -64,21 +63,25 @@
             const form = this;
             const data = new FormData(form);
             const selectedPlan = document.getElementById('plan').value;
+            const btn = document.getElementById('submitBtn');
 
-            // Submit form data and files to Formspree
+            btn.innerText = "Uploading Photos & Submitting...";
+            btn.disabled = true;
+
+            // Submit details and photo attachments to Formspree
             fetch(form.action, {
                 method: 'POST',
                 body: data,
                 headers: { 'Accept': 'application/json' }
             }).then(response => {
-                // Redirect to Stripe Checkout after successful form & image upload
+                // Redirect to Stripe Checkout after successful form and image upload
                 if (selectedPlan === 'spotlight') {
                     window.location.href = "https://buy.stripe.com/28E3cx1SU7Vn5eKgIL8ww01";
                 } else {
                     window.location.href = "https://buy.stripe.com/7sYbJ3eFG6RjcHc1NR8ww00";
                 }
             }).catch(error => {
-                alert('Submission successful! Proceeding to payment...');
+                alert('Submission received! Proceeding to payment...');
                 window.location.href = "https://buy.stripe.com/7sYbJ3eFG6RjcHc1NR8ww00";
             });
         });
